@@ -4,7 +4,6 @@ const postModel = mongoose.model('posts', postSchema)
 
  async function getAllPosts (req, res) {
     // Logic to fetch all posts from the database
-    console.log("Fetching all posts from the database")
     let data = await postModel.find()
     console.log(data)
     res.send(data)
@@ -12,11 +11,12 @@ const postModel = mongoose.model('posts', postSchema)
   
   async function   createPost(req, res) {
     // Logic to create a new post
-    const newPost = new postModel({
-        entry: "Transport fee",
-        categories: ["100", "200", "300"],
-    }
-    )
+    const postData = {
+      entry: req.body.entry,
+      categories: req.body.categories,
+      comments: req.body.comments
+  };
+    const newPost = new postModel(postData)
     const data = await newPost.save()
     res.send(data) 
   }
@@ -31,13 +31,13 @@ const postModel = mongoose.model('posts', postSchema)
   async function   updatePost(req, res) {
     // Logic to update a post
     const id = req.params.id
-    const updatedPost = new postModel({
-        entry: "Updated Transport fee",
-        categories: ["100", "200", "300"],
-    }
-    )
-    let data = await postModel.findByIdAndUpdate(id, {$set: { entry: "Updated Transport fee",
-    categories: ["100", "200", "300"]}}, {new:true})
+    const postData = {
+      entry: req.body.entry,
+      categories: req.body.categories,
+      comments: req.body.comments
+  };
+  console.log(postData)
+    let data = await postModel.findByIdAndUpdate(id, {$set: postData}, {new:true})
     res.send(data);
 }
   

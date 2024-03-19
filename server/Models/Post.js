@@ -8,7 +8,12 @@ const postSchema = new mongoose.Schema({
     categories: {
         type: [String],
         required: true,
-    }
+    },
+    comments: [{
+        type: mongoose.Schema.Types.ObjectId,       
+        ref: 'commentSchema', // Reference to the Comment model     
+        required: false, 
+        }],
 })
 
 module.exports = postSchema
