@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
-
+const commentSchema = require('./Comment')
+const Comment = mongoose.model('Comment', commentSchema);
 const postSchema = new mongoose.Schema({
     entry: {
         type: String,
@@ -11,7 +12,7 @@ const postSchema = new mongoose.Schema({
     },
     comments: [{
         type: mongoose.Schema.Types.ObjectId,       
-        ref: 'commentSchema', // Reference to the Comment model     
+        ref: 'Comment', // Reference to the Comment model     
         required: false, 
         }],
 })

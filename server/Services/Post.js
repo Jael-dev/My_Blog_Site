@@ -4,7 +4,7 @@ const postModel = mongoose.model('posts', postSchema)
 
  async function getAllPosts (req, res) {
     // Logic to fetch all posts from the database
-    let data = await postModel.find()
+    let data = await postModel.find().populate('comments').exec()
     console.log(data)
     res.send(data)
   }
@@ -24,7 +24,7 @@ const postModel = mongoose.model('posts', postSchema)
   async function  getPostById(req, res) {
     // Logic to fetch a post by ID
     const id = req.params.id
-    let data = await postModel.findById(id)
+    let data = await postModel.findById(id).populate('comments').exec()
     res.send(data)
   }
   
