@@ -36,7 +36,8 @@ const postModel = mongoose.model('posts', postSchema)
         categories: ["100", "200", "300"],
     }
     )
-    let data = await postModel.findByIdAndUpdate(id, {$set: updatedPost}, {new:true})
+    let data = await postModel.findByIdAndUpdate(id, {$set: { entry: "Updated Transport fee",
+    categories: ["100", "200", "300"]}}, {new:true})
     res.send(data);
 }
   
