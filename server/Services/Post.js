@@ -5,7 +5,7 @@ const postModel = mongoose.model('posts', postSchema)
  async function getAllPosts (req, res) {
     // Logic to fetch all posts from the database
     let data = await postModel.find().populate('comments').exec()
-    console.log(data)
+    console.log("Fetching data")
     res.send(data)
   }
   
@@ -14,7 +14,8 @@ const postModel = mongoose.model('posts', postSchema)
     const postData = {
       entry: req.body.entry,
       categories: req.body.categories,
-      comments: req.body.comments
+      comments: req.body.comments,
+      price: req.body.price
   };
     const newPost = new postModel(postData)
     const data = await newPost.save()
@@ -34,11 +35,25 @@ const postModel = mongoose.model('posts', postSchema)
     const postData = {
       entry: req.body.entry,
       categories: req.body.categories,
-      comments: req.body.comments
+      comments: req.body.comments,
+      price: req.body.price
   };
   console.log(postData)
     let data = await postModel.findByIdAndUpdate(id, {$set: postData}, {new:true})
     res.send(data);
+}
+
+async function sumPrice(req, res) {
+  // Logic to sum the prices of the different posts
+  let data = await postModel.aggregate([{$group: {_id: null, total: {$sum: "$price"}}}])
+  console.log(data)
+  res.send(data)
+}
+
+async function averagePrice(req, res) {
+  // Logic to average the prices of the different posts
+  let data = await postModel.aggregate([{$group: {_id: null, average: {$avg: "$price"}}}])
+  res.send(data)
 }
   
 async function   deletePost(req, res) {
@@ -53,5 +68,7 @@ async function   deletePost(req, res) {
     createPost,
     getPostById,
     updatePost,
-    deletePost
+    deletePost,
+    sumPrice,
+    averagePrice
 };
